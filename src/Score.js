@@ -1,10 +1,13 @@
 import React from 'react';
+import {auth, db} from './config.js';
 
 class Score extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
+                    db: "",
                     player1: "",
                     score1: "",
                     player2: "",
@@ -16,6 +19,17 @@ class Score extends React.Component {
         this.handleScore1 = this.handleScore1.bind(this);
         this.handleScore2 = this.handleScore2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.getUserData = this.getUserData.bind(this);
+    }
+
+    getUserData() {
+        let ref = db.ref('Scores');
+        ref.on('value', snapshot => {
+            snapshot.forEach(snap => {
+                console.log(snap.val());
+            });
+        });
+        console.log('DATA RETRIEVED');
     }
 
     handlePlayer1(event) {
@@ -66,6 +80,7 @@ class Score extends React.Component {
                 {this.state.scorers.map((score, index) => {
                     return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>)
                 })}
+                <button onClick={this.getUserData}>Get User Data</button>
             </div>
         );
     }
