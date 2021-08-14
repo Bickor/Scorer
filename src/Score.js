@@ -20,6 +20,7 @@ class Score extends React.Component {
         this.handleScore2 = this.handleScore2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getUserData = this.getUserData.bind(this);
+        this.sendUserData = this.sendUserData.bind(this);
     }
 
     getUserData() {
@@ -30,6 +31,17 @@ class Score extends React.Component {
             });
         });
         console.log('DATA RETRIEVED');
+    }
+
+    sendUserData() {
+        let date = new Date();
+        console.log(date.getMonth());
+        db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
+            Player1: "German",
+            Player2: "Martin",
+            Score1: "51",
+            Score2: "60"
+        });
     }
 
     handlePlayer1(event) {
@@ -81,6 +93,7 @@ class Score extends React.Component {
                     return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>)
                 })}
                 <button onClick={this.getUserData}>Get User Data</button>
+                <button onClick={this.sendUserData}>Set User Data</button>
             </div>
         );
     }
