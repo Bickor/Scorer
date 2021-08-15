@@ -67,6 +67,15 @@ class Score extends React.Component {
             && this.state.score2 !== "") {
             this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
         }
+
+        let date = new Date();
+        console.log(date.getMonth());
+        db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
+            Player1: this.state.player1,
+            Player2: this.state.player2,
+            Score1: this.state.score1,
+            Score2: this.state.score2
+        });
         event.preventDefault();
     }
     
