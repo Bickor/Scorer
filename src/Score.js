@@ -20,28 +20,28 @@ class Score extends React.Component {
         this.handleScore2 = this.handleScore2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getUserData = this.getUserData.bind(this);
-        this.sendUserData = this.sendUserData.bind(this);
     }
 
     getUserData() {
         let ref = db.ref('Scores');
         ref.on('value', snapshot => {
+            
+            // Get each day
             snapshot.forEach(snap => {
-                console.log(snap.val());
+
+                // Get each match
+                snap.forEach(s => {
+                    this.setState({player1: s.val().Player1});
+                    this.setState({score1: s.val().Score1});
+                    this.setState({player2: s.val().Player2});
+                    this.setState({score2: s.val().Score2});
+                    
+                    // Add the new score to all the scores.
+                    this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
+                });
             });
         });
         console.log('DATA RETRIEVED');
-    }
-
-    sendUserData() {
-        let date = new Date();
-        console.log(date.getMonth());
-        db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
-            Player1: "German",
-            Player2: "Martin",
-            Score1: "51",
-            Score2: "60"
-        });
     }
 
     handlePlayer1(event) {
@@ -65,17 +65,19 @@ class Score extends React.Component {
             && this.state.score1 !== ""
             && this.state.player2 !== ""
             && this.state.score2 !== "") {
-            this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
-        }
 
-        let date = new Date();
-        console.log(date.getMonth());
-        db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
-            Player1: this.state.player1,
-            Player2: this.state.player2,
-            Score1: this.state.score1,
-            Score2: this.state.score2
-        });
+            // Add the new score to all the scores.
+            this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
+        
+            // Get the current date to add to the database. Month is zero indexed so we need to add one.
+            let date = new Date();
+            db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
+                Player1: this.state.player1,
+                Player2: this.state.player2,
+                Score1: this.state.score1,
+                Score2: this.state.score2
+            });
+        }
         event.preventDefault();
     }
     
@@ -102,7 +104,6 @@ class Score extends React.Component {
                     return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>)
                 })}
                 <button onClick={this.getUserData}>Get User Data</button>
-                <button onClick={this.sendUserData}>Set User Data</button>
             </div>
         );
     }
