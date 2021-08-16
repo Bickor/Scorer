@@ -20,9 +20,16 @@ class Score extends React.Component {
         this.handleScore2 = this.handleScore2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getUserData = this.getUserData.bind(this);
+
+        this.getUserData();
+
     }
 
     getUserData() {
+
+        // This prevents duplicate elements.
+        this.setState(prevState => ({scorers: []}));
+
         let ref = db.ref('Scores');
         ref.on('value', snapshot => {
             
@@ -31,17 +38,10 @@ class Score extends React.Component {
 
                 // Get each match
                 snap.forEach(s => {
-                    this.setState({player1: s.val().Player1});
-                    this.setState({score1: s.val().Score1});
-                    this.setState({player2: s.val().Player2});
-                    this.setState({score2: s.val().Score2});
-                    
-                    // Add the new score to all the scores.
-                    this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
+                    this.setState(prevState => ({scorers: [[s.val().Player1, s.val().Score1, s.val().Player2, s.val().Score2], ...prevState.scorers]}))
                 });
             });
         });
-        console.log('DATA RETRIEVED');
     }
 
     handlePlayer1(event) {
@@ -66,10 +66,7 @@ class Score extends React.Component {
             && this.state.player2 !== ""
             && this.state.score2 !== "") {
 
-            // Add the new score to all the scores.
-            this.setState(prevState => ({scorers: [...prevState.scorers, [this.state.player1, this.state.score1, this.state.player2, this.state.score2]]}))
-        
-            // Get the current date to add to the database. Month is zero indexed so we need to add one.
+            //Get the current date to add to the database. Month is zero indexed so we need to add one.
             let date = new Date();
             db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
                 Player1: this.state.player1,
@@ -78,6 +75,12 @@ class Score extends React.Component {
                 Score2: this.state.score2
             });
         }
+
+        // Weird fix that prevents duplication of games in page. Needs fix.
+        // TODO(Bickor): Remove this call and simply add the latest match to the scores.
+        this.getUserData();
+
+        // Prevents page reload
         event.preventDefault();
     }
     
@@ -100,10 +103,11 @@ class Score extends React.Component {
                     </label>
                     <input type="submit" value="Submit"/>
                 </form>
-                {this.state.scorers.map((score, index) => {
-                    return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>)
-                })}
-                <button onClick={this.getUserData}>Get User Data</button>
+                <div>
+                    {this.state.scorers.map((score, index) => {
+                        return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>);
+                    })}
+                </div>
             </div>
         );
     }
