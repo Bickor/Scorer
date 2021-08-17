@@ -22,11 +22,11 @@ class Leaderboard extends React.Component {
             if (user) {
                 // If the user is logged in
 
-                // This prevents duplicate elements.
-                this.setState(prevState => ({leaderboard: []}));
-
                 let ref = db.ref('Leaderboard');
                 ref.on('value', snapshot => {
+
+                    // Re initialize the leaderboard.
+                    this.setState(prevState => ({leaderbaord: []}));
 
                     snapshot.forEach(snap => {
 
@@ -50,7 +50,7 @@ class Leaderboard extends React.Component {
         return (
             <div>
                 {this.state.leaderbaord.sort().map((player, index) => {
-                    console.log(index);
+                    //console.log(index);
                     return (<p key={index}>{player[1]}: {player[0]}</p>)
                 })}
             </div>
