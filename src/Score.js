@@ -86,6 +86,35 @@ class Score extends React.Component {
                         Score2: this.state.score2
                     });
 
+                    // Only add to the leaderboard if players didn't draw.
+                    if (this.state.score1 !== this.state.score2) {
+                        let winner = this.state.score1 > this.state.score2 ? this.state.player1 : this.state.player2;
+
+                        // Current wins is initialized at 1, so that if the player is not found in the leaderboard,
+                        // this is its first match won.
+                        let currentWins = 1;
+
+                        // Read leaderboard to current scores.
+                        // TODO: Improve this to use the data we already have from the other component.
+                        db.ref('Leaderboard').on('value', snapshot => {
+                            snapshot.forEach(snap => {
+                                if (snap.key === winner) {
+
+                                    // Simply add with 1 so now they have won another game.
+                                    snap.forEach(s => {
+                                        currentWins += s.val();
+                                    })
+                                }
+                            });
+                        });
+
+                        // Add the currentWins to the leaderboard
+                        db.ref('Leaderboard/' + winner).set({
+                            Wins: currentWins
+                        });
+                        
+                    }
+
                     // Weird fix that prevents duplication of games in page. Needs fix.
                     // TODO(Bickor): Remove this call and simply add the latest match to the scores.
                     this.getUserData();
