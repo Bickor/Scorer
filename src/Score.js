@@ -88,7 +88,7 @@ class Score extends React.Component {
 
                     // Only add to the leaderboard if players didn't draw.
                     if (this.state.score1 !== this.state.score2) {
-                        let winner = this.state.score1 > this.state.score2 ? this.state.player1 : this.state.player2;
+                        let winner = Number(this.state.score1) > Number(this.state.score2) ? this.state.player1 : this.state.player2;
 
                         // Current wins is initialized at 1, so that if the player is not found in the leaderboard,
                         // this is its first match won.
