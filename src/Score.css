@@ -1,0 +1,20 @@
+.score-container {
+    width: 100%;
+    display: flex;
+    margin: 20px;
+    justify-content: center;
+}
+
+.winner {
+    background-color: green;
+    width: 20%;
+    float: left;
+    border-radius: 5px;
+}
+
+.loser {
+    background-color: red;
+    width: 20%;
+    float: left;
+    border-radius: 5px;
+}

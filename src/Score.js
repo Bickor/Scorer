@@ -1,3 +1,4 @@
+import './Score.css';
 import React from 'react';
 import {auth, db} from './config.js';
 
@@ -38,7 +39,7 @@ class Score extends React.Component {
 
                         // Get each match
                         snap.forEach(s => {
-                            this.setState(prevState => ({scorers: [[s.val().Player1, s.val().Score1, s.val().Player2, s.val().Score2], ...prevState.scorers]}))
+                            this.setState(prevState => ({scorers: [[s.val().Player1, s.val().Score1, s.val().Player2, s.val().Score2, snap.key], ...prevState.scorers]}))
                         });
                     });
                 });
@@ -153,7 +154,37 @@ class Score extends React.Component {
                 </form>
                 <div>
                     {this.state.scorers.map((score, index) => {
-                        return (<p key={index}>{score[0]} {score[1]} - {score[3]} {score[2]}</p>);
+                        if (score[1] === score[3]) {
+                            return (<p key={index}>{score[4]}: {score[0]} {score[1]} - {score[3]} {score[2]}</p>);
+                        } else {
+                            if (score[1] > score[3]) {
+                                return (
+                                    <div key={index} className="score-container">
+                                        <p>{score[4]}: </p>
+                                        <div className="winner">
+                                            <p key={index}>{score[0]} {score[1]}</p>
+                                        </div>
+                                        <p> - </p>
+                                        <div className="loser">
+                                            <p key={index}>{score[3]} {score[2]}</p>
+                                        </div>
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div key={index} className="score-container">
+                                        <p>{score[4]}: </p>
+                                        <div className="loser">
+                                            <p>{score[0]} {score[1]}</p>
+                                        </div>
+                                        <p> - </p>
+                                        <div className="winner">
+                                            <p>{score[3]} {score[2]}</p>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        }
                     })}
                 </div>
                 <button onClick={this.getUserData}>Get data</button>
