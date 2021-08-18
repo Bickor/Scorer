@@ -157,7 +157,7 @@ class Score extends React.Component {
                         if (score[1] === score[3]) {
                             return (<p key={index}>{score[4]}: {score[0]} {score[1]} - {score[3]} {score[2]}</p>);
                         } else {
-                            if (score[1] > score[3]) {
+                            if (Number(score[1]) > Number(score[3])) {
                                 return (
                                     <div key={index} className="score-container">
                                         <p>{score[4]}: </p>
