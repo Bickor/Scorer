@@ -80,7 +80,7 @@ class Score extends React.Component {
 
                     // Get the current date to add to the database. Month is zero indexed so we need to add one.
                     let date = new Date();
-                    db.ref('Scores/' + date.getDate() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getFullYear()).push({
+                    db.ref('Scores/' + date.getFullYear() + '-' + (Number(date.getMonth()) + 1) + '-' + date.getDate()).push({
                         Player1: this.state.player1,
                         Player2: this.state.player2,
                         Score1: this.state.score1,
@@ -154,13 +154,14 @@ class Score extends React.Component {
                 </form>
                 <div>
                     {this.state.scorers.map((score, index) => {
+                        let date = score[4]
                         if (score[1] === score[3]) {
-                            return (<p key={index}>{score[4]}: {score[0]} {score[1]} - {score[3]} {score[2]}</p>);
+                            return (<p key={index}>{date}: {score[0]} {score[1]} - {score[3]} {score[2]}</p>);
                         } else {
                             if (Number(score[1]) > Number(score[3])) {
                                 return (
                                     <div key={index} className="score-container">
-                                        <p>{score[4]}: </p>
+                                        <p>{date}: </p>
                                         <div className="winner">
                                             <p key={index}>{score[0]} {score[1]}</p>
                                         </div>
@@ -173,7 +174,7 @@ class Score extends React.Component {
                             } else {
                                 return (
                                     <div key={index} className="score-container">
-                                        <p>{score[4]}: </p>
+                                        <p>{date}: </p>
                                         <div className="loser">
                                             <p>{score[0]} {score[1]}</p>
                                         </div>
