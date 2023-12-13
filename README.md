@@ -40,3 +40,14 @@ const config = {
 ```
 
 5. Run `npm start` in the project folder.
+
+## Hosting
+TODO: Do section.
+
+## TODO
+[ ] The page reloads everything again on change of score (if you change the score in one tab and have another tab open)
+[ ] Make scores prettier
+[ ] Make form prettier
+[ ] Automatic hosting on push
+[ ] Get data only show last 10 games, and rest in another page
+[ ] Order games by date

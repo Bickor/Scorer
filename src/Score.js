@@ -25,7 +25,6 @@ class Score extends React.Component {
     }
 
     getUserData() {
-
         auth().onAuthStateChanged((user) => {
             if (user) {
                 // This prevents duplicate elements.
@@ -89,8 +88,9 @@ class Score extends React.Component {
 
                     let currentScore = 1;
 
-                    // Only add to the leaderboard if players didn't draw.
                     if (this.state.score1 !== this.state.score2) {
+                        // If players didn't draw
+
                         let winner = Number(this.state.score1) > Number(this.state.score2) ? this.state.player1 : this.state.player2;
 
                         // Current wins is initialized at 1, so that if the player is not found in the leaderboard,
@@ -117,6 +117,7 @@ class Score extends React.Component {
                         });
                         
                     } else {
+                        // If players drew
                         db.ref('Leaderboard').on('value', snapshot => {
                             snapshot.forEach(snap => {
                                 if (snap.key === "Tie") {
