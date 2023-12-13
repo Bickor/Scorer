@@ -87,13 +87,15 @@ class Score extends React.Component {
                         Score2: this.state.score2
                     });
 
+                    let currentScore = 1;
+
                     // Only add to the leaderboard if players didn't draw.
                     if (this.state.score1 !== this.state.score2) {
                         let winner = Number(this.state.score1) > Number(this.state.score2) ? this.state.player1 : this.state.player2;
 
                         // Current wins is initialized at 1, so that if the player is not found in the leaderboard,
                         // this is its first match won.
-                        let currentWins = 1;
+                        
 
                         // Read leaderboard to current scores.
                         // TODO: Improve this to use the data we already have from the other component.
@@ -103,7 +105,7 @@ class Score extends React.Component {
 
                                     // Simply add with 1 so now they have won another game.
                                     snap.forEach(s => {
-                                        currentWins += s.val();
+                                        currentScore += s.val();
                                     })
                                 }
                             });
@@ -111,9 +113,25 @@ class Score extends React.Component {
 
                         // Add the currentWins to the leaderboard
                         db.ref('Leaderboard/' + winner).set({
-                            Wins: currentWins
+                            Wins: currentScore
                         });
                         
+                    } else {
+                        db.ref('Leaderboard').on('value', snapshot => {
+                            snapshot.forEach(snap => {
+                                if (snap.key === "Tie") {
+
+                                    // Simply add with 1 so now they have won another game.
+                                    snap.forEach(s => {
+                                        currentScore += s.val();
+                                    })
+                                }
+                            });
+                        });
+
+                        db.ref('Leaderboard/Tie').set({
+                            Tie: currentScore
+                        });
                     }
 
                     // Weird fix that prevents duplication of games in page. Needs fix.

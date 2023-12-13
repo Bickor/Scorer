@@ -39,4 +39,4 @@ const config = {
   export const db = firebase.database();
 ```
 
-5. Run npm start in the project folder.
+5. Run `npm start` in the project folder.
