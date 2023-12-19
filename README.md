@@ -56,4 +56,5 @@ const config = {
 [ ] Make form prettier
 [ ] Automatic hosting on push
 [ ] Get data only show last 10 games, and rest in another page
-[ ] Order games by date
+[X] Support ties in the scores
+[X] Order games by date

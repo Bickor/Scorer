@@ -18,3 +18,10 @@
     float: left;
     border-radius: 5px;
 }
+
+.tie {
+    background-color: lightblue;
+    width: 20%;
+    float: left;
+    border-radius: 5px;
+}

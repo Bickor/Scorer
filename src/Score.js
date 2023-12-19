@@ -175,7 +175,18 @@ class Score extends React.Component {
                     {this.state.scorers.map((score, index) => {
                         let date = score[4]
                         if (score[1] === score[3]) {
-                            return (<p key={index}>{date}: {score[0]} {score[1]} - {score[3]} {score[2]}</p>);
+                            return (
+                                <div key={index} className="score-container">
+                                    <p>{date}: </p>
+                                    <div className="tie">
+                                        <p key={index}>{score[0]} {score[1]}</p>
+                                    </div>
+                                    <p> - </p>
+                                    <div className="tie">
+                                        <p key={index}>{score[3]} {score[2]}</p>
+                                    </div>
+                                </div>
+                            );
                         } else {
                             if (Number(score[1]) > Number(score[3])) {
                                 return (
