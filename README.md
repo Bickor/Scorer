@@ -42,13 +42,14 @@ const config = {
 5. Run `npm start` in the project folder.
 
 ## Deploy
-1. Run `npm build`
+1. Run `npm run build`
   - This will create a build folder with the project
 2. Run `firebase init`
 3. Select `Hosting`
 4. Select `build` as your public folder
 5. Select `y` to single page
-6. Don't overwrite the already existing index.html
+6. Select `N` to overwrite.
+7. Don't overwrite the already existing index.html
 
 ## TODO
 [ ] The page reloads everything again on change of score (if you change the score in one tab and have another tab open)
