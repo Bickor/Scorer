@@ -49,7 +49,7 @@ const config = {
 4. Select `build` as your public folder
 5. Select `y` to single page
 6. Select `N` to overwrite.
-7. Don't overwrite the already existing index.html
+7. Run `firebase deploy` after the steps are finished.
 
 ## TODO
 [ ] The page reloads everything again on change of score (if you change the score in one tab and have another tab open)
